@@ -1,0 +1,37 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build GUI application (offline)",
+            "type": "process",
+            "command": "C:\\MSYS64\\usr\\bin\\bash.exe",
+            "args": [
+                "-c",
+                "set -e; export PATH=\"/ucrt64/bin:/usr/bin:/bin:$PATH\"; if grep -nE '<property name=\"flag\">[^<]*wxEXPAND[^<]*wxALIGN_|<property name=\"flag\">[^<]*wxALIGN_[^<]*wxEXPAND' ClientformOrderPesanan.fbp; then echo 'Invalid wxSizerFlags: wxEXPAND cannot be combined with wxALIGN_*; fix the flags in the form designer.' >&2; exit 1; fi; \"/e/wxFormBuilder-4.2.1-i686/wxFormBuilder.exe\" --generate ClientformOrderPesanan.fbp; mkdir -p build; cp src/disabled.png src/focus.png src/pressed.png src/current.png build/; windres src/app.rc -O coff -o build/app-res.o; g++ $(wx-config --cxxflags) -std=c++17 -g -Wall -Wextra src/main.cpp src/Frame_Base.cpp build/app-res.o -o build/ClientformOrderPesanan.exe $(wx-config --libs) -mwindows"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc",
+            "detail": "Validates wxSizerFlags, regenerates the UI from ClientformOrderPesanan.fbp, then builds with local wxFormBuilder and MSYS2 UCRT64 wxWidgets."
+        },
+        {
+            "label": "Generate wxFormBuilder UI",
+            "type": "process",
+            "command": "C:\\MSYS64\\usr\\bin\\bash.exe",
+            "args": [
+                "-c",
+                "export PATH=\"/ucrt64/bin:/usr/bin:/bin:$PATH\"; \"/e/wxFormBuilder-4.2.1-i686/wxFormBuilder.exe\" --generate ClientformOrderPesanan.fbp"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "detail": "Run only after changing ClientformOrderPesanan.fbp; uses the locally installed wxFormBuilder."
+        }
+    ]
+}
